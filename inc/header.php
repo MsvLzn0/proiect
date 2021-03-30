@@ -13,6 +13,7 @@ spl_autoload_register(function($classes){
 
 
 $users = new Users();
+$clients = new Clients();
 
 ?>
 
@@ -47,10 +48,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     <div class="container">
 
       <nav class="navbar navbar-expand-md navbar-dark bg-dark card-header">
-        <a class="navbar-brand" href="index.php"><i class="fas fa-home mr-2"></i>Acasa</a>
-          <a class="navbar-brand" href="index.php"><i class="bi bi-card-checklist"></i>Contract</a>
-          <a class="navbar-brand" href="index.php"><i class="bi bi-card-checklist"></i>Servicii</a>
+        <a class="navbar-brand" href="news.php"><i class="bi bi-card-checklist"></i>News</a>
+          <a class="navbar-brand" href="servicii.php"><i class="bi bi-card-checklist"></i>Servicii</a>
           <a class="navbar-brand" href="index.php"><i class="bi bi-card-checklist"></i>Traseu</a>
+          <a class="navbar-brand" href="index.php"><i class="bi bi-card-checklist"></i>Contract</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -62,10 +63,33 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
           <?php if (Session::get('id') == TRUE) { ?>
             <?php if (Session::get('roleid') == '1') { ?>
-              <li class="nav-item">
 
+                  <li class="nav-item">
+                      <a class="nav-link" href="client.php"><i class="fa fa-id-badge mr-2"></i>Client lists </span></a>
+                  </li>
+
+                  <li class="nav-item
+
+              <?php
+
+                  $path = $_SERVER['SCRIPT_FILENAME'];
+                  $current = basename($path, '.php');
+                  if ($current == 'addClient') {
+                      echo " active ";
+                  }
+
+                  ?>">
+
+                      <a class="nav-link" href="addClient.php"><i class="fas fa-user-plus mr-2"></i>Add Client </span></a>
+                  </li>
+              <li class="nav-item">
                   <a class="nav-link" href="index.php"><i class="fas fa-users mr-2"></i>User lists </span></a>
               </li>
+
+
+
+
+
               <li class="nav-item
 
               <?php
@@ -80,6 +104,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
                 <a class="nav-link" href="addUser.php"><i class="fas fa-user-plus mr-2"></i>Add user </span></a>
               </li>
+
             <?php  } ?>
             <li class="nav-item
             <?php

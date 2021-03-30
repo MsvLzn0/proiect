@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2021 at 09:50 PM
+-- Generation Time: Mar 29, 2021 at 08:26 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -93,6 +93,27 @@ CREATE TABLE `locatari_imobil` (
   `nr_locatari` int(11) DEFAULT NULL,
   `id_imobil` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `image` text NOT NULL,
+  `content` text NOT NULL,
+  `datetime` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `title`, `image`, `content`, `datetime`) VALUES
+(1, 'Test Post', 'https://via.placeholder.com/150\r\n', '<p> Content </p>', 0);
 
 -- --------------------------------------------------------
 
@@ -215,7 +236,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`, `roleid`, `isActive`, `created_at`, `updated_at`) VALUES
-(22, 'Petru', 'MsvLzn', 'trifanp@mail.ru', '866d7aae96a62faf42291ea4b64ed35c52a15882', '+37369567740', 1, 0, '2021-03-17 20:17:50', '2021-03-17 20:17:50');
+(1, 'Petru', 'MsvLzn', 'trifanp@mail.ru', '866d7aae96a62faf42291ea4b64ed35c52a15882', '+37369567740', 1, 0, '2021-03-17 20:17:50', '2021-03-17 20:17:50');
 
 --
 -- Indexes for dumped tables
@@ -256,6 +277,12 @@ ALTER TABLE `localitate`
 ALTER TABLE `locatari_imobil`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_imobil` (`id_imobil`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `raion`
@@ -345,6 +372,12 @@ ALTER TABLE `locatari_imobil`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `raion`
 --
 ALTER TABLE `raion`
@@ -390,7 +423,7 @@ ALTER TABLE `tbl_roles`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables

@@ -17,7 +17,6 @@ class Users{
 
   // Date formate Method
    public function formatDate($date){
-     // date_default_timezone_set('Asia/Dhaka');
       $strtime = strtotime($date);
     return date('Y-m-d H:i:s', $strtime);
    }
@@ -441,13 +440,12 @@ class Users{
           Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Error !</strong> Datele nu sunt dezactivate!</div>');
-
-            return $msg;
+          
         }
     }
 
 
-    // User Deactivated By Admin
+    // User activated By Admin
     public function userActiveByAdmin($active){
       $sql = "UPDATE tbl_users SET
        isActive=:isActive
