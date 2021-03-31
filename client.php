@@ -63,14 +63,14 @@ if (isset($username)) {
             <thead>
             <tr>
                 <th  class="text-center">ID</th>
-                <th  class="text-center">Nume</th>
-                <th  class="text-center">Prenume</th>
-                <th  class="text-center">Patronimic</th>
+                <th  class="text-center">Name</th>
+                <th  class="text-center">Surname</th>
+                <th  class="text-center">Patronymic</th>
                 <th  class="text-center">IDNP</th>
-                <th  class="text-center">Data</th>
-                <th  class="text-center">Tel</th>
+               <!-- <th  class="text-center">Data</th>-->
+                <th  class="text-center">Mobile</th>
                 <th  class="text-center">Email</th>
-                <th  class="text-center">Adresa</th>
+                <th  class="text-center">Address</th>
                 <th  width='25%' class="text-center">Action</th>
             </tr>
             </thead>
@@ -98,15 +98,15 @@ if (isset($username)) {
                         <td><?php echo $value->patronimic; ?></td>
 
                         <td><span class="badge badge-lg badge-secondary text-white"><?php echo $value->IDNP; ?></span></td>
-                        <td><span class="badge badge-lg badge-secondary text-white"><?php echo $clients->formatDate($value->data);  ?></span></td>
+                        <!--<td><span class="badge badge-lg badge-secondary text-white"><?php /*echo $clients->formatDate($value->data);  */?></span></td>-->
                         <td><span class="badge badge-lg badge-secondary text-white"><?php echo $value->tel; ?></span></td>
                         <td><?php echo $value->e_mail; ?></td>
                         <td><?php echo $value->adresa; ?></td>
 
                         <td>
                             <?php if ( Session::get("roleid") == '1') {?>
-                                <a class="btn btn-success btn-sm" href="profile.php?id=<?php echo $value->id;?>">View</a>
-                                <a class="btn btn-primary btn-sm " href="profile.php?id=<?php echo $value->id;?>">Edit</a>
+                                <a class="btn btn-success btn-sm" href="clientVE.php?id=<?php echo $value->id;?>">View</a>
+                                <a class="btn btn-primary btn-sm " href="clientVE.phpid=<?php echo $value->id;?>">Edit</a>
                                 <a onclick="return confirm('Are you sure To Delete ?')" class="btn btn-danger
                     <?php if (Session::get("id") == $value->id) {
                                     echo "disabled";
@@ -115,28 +115,28 @@ if (isset($username)) {
 
 
                             <?php  }elseif(Session::get("id") == $value->id  && Session::get("roleid") == '2'){ ?>
-                                <a class="btn btn-success btn-sm " href="profile.php?id=<?php echo $value->id;?>">View</a>
-                                <a class="btn btn-info btn-sm " href="profile.php?id=<?php echo $value->id;?>">Edit</a>
+                                <a class="btn btn-success btn-sm " href="clientVE.php?id=<?php echo $value->id;?>">View</a>
+                                <a class="btn btn-info btn-sm " href="clientVE.php?id=<?php echo $value->id;?>">Edit</a>
                             <?php  }elseif( Session::get("roleid") == '2'){ ?>
                                 <a class="btn btn-success btn-sm
                           <?php if ($value->roleid == '1') {
                                     echo "disabled";
                                 } ?>
-                          " href="profile.php?id=<?php echo $value->id;?>">View</a>
+                          " href="clientVE.php?id=<?php echo $value->id;?>">View</a>
                                 <a class="btn btn-info btn-sm
                           <?php if ($value->roleid == '1') {
                                     echo "disabled";
                                 } ?>
-                          " href="profile.php?id=<?php echo $value->id;?>">Edit</a>
+                          " href="clientVE.php?id=<?php echo $value->id;?>">Edit</a>
                             <?php }elseif(Session::get("id") == $value->id  && Session::get("roleid") == '3'){ ?>
-                                <a class="btn btn-success btn-sm " href="profile.php?id=<?php echo $value->id;?>">View</a>
-                                <a class="btn btn-info btn-sm " href="profile.php?id=<?php echo $value->id;?>">Edit</a>
+                                <a class="btn btn-success btn-sm " href="clientVE.php?id=<?php echo $value->id;?>">View</a>
+                                <a class="btn btn-info btn-sm " href="clientVE.php?id=<?php echo $value->id;?>">Edit</a>
                             <?php }else{ ?>
                                 <a class="btn btn-success btn-sm
                           <?php if ($value->roleid == '1') {
                                     echo "disabled";
                                 } ?>
-                          " href="profile.php?id=<?php echo $value->id;?>">View</a>
+                          " href="clientVE.php?id=<?php echo $value->id;?>">View</a>
 
                             <?php } ?>
 

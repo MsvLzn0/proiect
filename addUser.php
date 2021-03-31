@@ -42,7 +42,7 @@ if (isset($userAdd)) {
                   <input type="email" name="email"  class="form-control">
                 </div>
                 <div class="form-group">
-                  <label for="mobile">Mobile Number</label>
+                  <label for="mobile">Mobile</label>
                   <input type="text" name="mobile"  class="form-control">
                 </div>
                 <div class="form-group">

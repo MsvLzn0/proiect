@@ -173,26 +173,108 @@ public function clientDeactiveByAdmin($deactive)
     <strong>Error !</strong> Clientul nu este dezactivate!</div>');
     }
 }
-// User activated By Admin
-    public function clientActiveByAdmin($active){
-        $sql = "UPDATE client SET
-       isActive=:isActive
-       WHERE id = :id";
 
-        $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':isActive', 0);
-        $stmt->bindValue(':id', $active);
-        $result =   $stmt->execute();
-        if ($result) {
-            echo "<script>location.href='client.php';</script>";
-            Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
+//   Get Single Client Information By Id Method
+    public function updateClientByIdInfo($clientid, $data)
+    {
+        $nume = $data['nume'];
+        $prenume = $data['prenume'];
+        $patronimic = $data['patronimic'];
+        $IDNP = $data['IDNP'];
+        $tel = $data['tel'];
+        $e_mail = $data['e_mail'];
+        $adresa = $data['adresa'];
+
+
+        $checkIDNP = $this->checkExistIDNP($IDNP);
+
+        if ($nume == "" || $prenume == "" || $patronimic == "" || $IDNP == "" || $tel == "" || $e_mail == "" || $adresa == "") {
+            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Câmpurile de introducere nu trebuie să fie Golite!</div>';
+            return $msg;
+        } elseif (strlen($nume) < 3) {
+            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Numele, prenumele, patronimicul este prea scurt, cel puțin 3 caractere!</div>';
+            return $msg;
+        } elseif (filter_var($tel, FILTER_SANITIZE_NUMBER_INT) == FALSE) {
+            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Introduceți numai caracterele numerice pentru câmpul Telefon si IDNP</div>';
+            return $msg;
+        } elseif (strlen($IDNP) < 13) {
+            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> IDNP-ul  este prea scurt, cel puțin 13 caractere!</div>';
+            return $msg;
+        } elseif (strlen($IDNP) > 13) {
+            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> IDNP-ul  este prea lung, cel mult 13 caractere!</div>';
+            return $msg;
+        } elseif (strlen($e_mail) < 8) {
+            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Email-ul  este prea scurt, cel putin 8 caractere!</div>';
+            return $msg;
+        } elseif ($checkIDNP == TRUE) {
+            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> IDNP-ul există deja, vă rugăm să încercați un alt IDNP ...!</div>';
+            return $msg;
+        } else {
+
+            $sql = "UPDATE client SET
+          nume = :nume,
+          prenume = :prenume,
+          patronimic = :patronimic,
+          IDNP = :IDNP,
+          tel = :tel,
+          e_mail = :e_mail,
+          adresa = :adresa
+          WHERE id = :id";
+            $stmt = $this->db->pdo->prepare($sql);
+            $stmt->bindValue(':nume', $nume);
+            $stmt->bindValue(':prenume', $prenume);
+            $stmt->bindValue(':patronimic', $patronimic);
+            $stmt->bindValue(':IDNP', $IDNP);
+            $stmt->bindValue(':tel', $tel);
+            $stmt->bindValue(':e_mail', $e_mail);
+            $stmt->bindValue(':adresa', $adresa);
+            $stmt->bindValue(':id', $clientid);
+            $result = $stmt->execute();
+
+            if ($result) {
+                echo "<script>location.href='client.php';</script>";
+                Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> Clientul activat cu succes!</div>');
-        }else{
-            echo "<script>location.href='client.php';</script>";
-            Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+          <strong>Success !</strong> Uau, informațiile dvs. au fost actualizate cu succes!</div>');
+
+
+            } else {
+                echo "<script>location.href='client.php';</script>";
+                Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Clientul nu este activat!</div>');
+    <strong>Error !</strong> Datele nu sunt inserate!</div>');
+
+
+            }
         }
+    }
+    // Get Single Client Information By Id Method
+    public function getClientInfoById($clientid){
+        $sql = "SELECT * FROM client WHERE id = :id LIMIT 1";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->bindValue(':id', $clientid);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+        if ($result) {
+            return $result;
+        }else{
+            return false;
+        }
+
+
     }
 }

@@ -102,8 +102,37 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
                          ?>">
 
-                <a class="nav-link" href="addUser.php"><i class="fas fa-user-plus mr-2"></i>Add user </span></a>
+                <a class="nav-link" href="addUser.php"><i class="fas fa-user-plus mr-2"></i>Add User </span></a>
               </li>
+
+
+
+
+
+
+
+
+
+
+                  <div  class="dropdown" >
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Add
+                          <span class="caret"></span></button>
+                      <ul  class="dropdown-menu">
+                          <li><a  href="addUser.php">Add User</a></li>
+                          <li><a href="addClient.php">Add Client</a></li>
+                          <li><a href="addImobil.php">Add Imobil</a></li>
+                      </ul>
+                  </div>
+
+
+
+
+
+
+
+
+
+
 
             <?php  } ?>
             <li class="nav-item
