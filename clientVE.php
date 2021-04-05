@@ -27,7 +27,7 @@ if (isset($updateClient)) {
 
 <div class="card ">
     <div class="card-header">
-        <h3>User Profile <span class="float-right"> <a href="index.php" class="btn btn-primary">Back</a> </h3>
+        <h3>Client Profile <span class="float-right"> <a href="index.php" class="btn btn-primary">Back</a> </h3>
     </div>
     <div class="card-body">
 

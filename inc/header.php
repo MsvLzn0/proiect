@@ -14,6 +14,7 @@ spl_autoload_register(function($classes){
 
 $users = new Users();
 $clients = new Clients();
+$services = new Services();
 
 ?>
 
@@ -49,8 +50,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
       <nav class="navbar navbar-expand-md navbar-dark bg-dark card-header">
         <a class="navbar-brand" href="news.php"><i class="bi bi-card-checklist"></i>News</a>
-          <a class="navbar-brand" href="servicii.php"><i class="bi bi-card-checklist"></i>Servicii</a>
-          <a class="navbar-brand" href="index.php"><i class="bi bi-card-checklist"></i>Traseu</a>
+          <a class="navbar-brand" href="service.php"><i class="bi bi-card-checklist"></i>Servicii</a>
+          <a class="navbar-brand" href="traseu.php"><i class="bi bi-card-checklist"></i>Traseu</a>
           <a class="navbar-brand" href="index.php"><i class="bi bi-card-checklist"></i>Contract</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -64,9 +65,26 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
           <?php if (Session::get('id') == TRUE) { ?>
             <?php if (Session::get('roleid') == '1') { ?>
 
+                  <div  class="dropdown" >
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Add
+                          <span class="caret"></span></button>
+                      <ul  class="dropdown-menu">
+                          <li><a  href="addUser.php">Add User</a></li>
+                          <li><a href="addClient.php">Add Client</a></li>
+                          <li><a href="addImobil.php">Add Imobil</a></li>
+                          <li><a href="addService.php">Add Service</a></li>
+
+                      </ul>
+                  </div>
+
+
+
+
+
                   <li class="nav-item">
                       <a class="nav-link" href="client.php"><i class="fa fa-id-badge mr-2"></i>Client lists </span></a>
                   </li>
+
 
                   <li class="nav-item
 
@@ -114,15 +132,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
 
 
-                  <div  class="dropdown" >
-                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Add
-                          <span class="caret"></span></button>
-                      <ul  class="dropdown-menu">
-                          <li><a  href="addUser.php">Add User</a></li>
-                          <li><a href="addClient.php">Add Client</a></li>
-                          <li><a href="addImobil.php">Add Imobil</a></li>
-                      </ul>
-                  </div>
 
 
 
