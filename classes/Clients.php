@@ -128,6 +128,12 @@ class Clients{
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
+    public function selectAllActiveClient(){
+        $sql = "SELECT * FROM client WHERE isActive='1' ORDER BY id DESC";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
 
 // Delete client by Id Method

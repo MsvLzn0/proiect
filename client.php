@@ -1,7 +1,6 @@
 <?php
 include 'inc/header.php';
 
-Session::CheckSession();
 
 $logMsg = Session::get('logMsg');
 if (isset($logMsg)) {
@@ -106,7 +105,7 @@ if (isset($username)) {
                         <td>
                             <?php if ( Session::get("roleid") == '1') {?>
                                 <a class="btn btn-success btn-sm" href="clientVE.php?id=<?php echo $value->id;?>">View</a>
-                                <a class="btn btn-primary btn-sm " href="clientVE.phpid=<?php echo $value->id;?>">Edit</a>
+
                                 <a onclick="return confirm('Are you sure To Delete ?')" class="btn btn-danger
                     <?php if (Session::get("id") == $value->id) {
                                     echo "disabled";
@@ -116,7 +115,7 @@ if (isset($username)) {
 
                             <?php  }elseif(Session::get("id") == $value->id  && Session::get("roleid") == '2'){ ?>
                                 <a class="btn btn-success btn-sm " href="clientVE.php?id=<?php echo $value->id;?>">View</a>
-                                <a class="btn btn-info btn-sm " href="clientVE.php?id=<?php echo $value->id;?>">Edit</a>
+
                             <?php  }elseif( Session::get("roleid") == '2'){ ?>
                                 <a class="btn btn-success btn-sm
                           <?php if ($value->roleid == '1') {
@@ -130,7 +129,7 @@ if (isset($username)) {
                           " href="clientVE.php?id=<?php echo $value->id;?>">Edit</a>
                             <?php }elseif(Session::get("id") == $value->id  && Session::get("roleid") == '3'){ ?>
                                 <a class="btn btn-success btn-sm " href="clientVE.php?id=<?php echo $value->id;?>">View</a>
-                                <a class="btn btn-info btn-sm " href="clientVE.php?id=<?php echo $value->id;?>">Edit</a>
+
                             <?php }else{ ?>
                                 <a class="btn btn-success btn-sm
                           <?php if ($value->roleid == '1') {

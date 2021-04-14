@@ -1,7 +1,5 @@
 <?php
 include 'inc/header.php';
-Session::CheckSession();
-
 ?>
 
 <?php
@@ -19,10 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 if (isset($updateClient)) {
     echo $updateClient;
 }
-
-
-
-
 ?>
 
 <div class="card ">

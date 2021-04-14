@@ -1,6 +1,5 @@
 <?php
 include 'inc/header.php';
-Session::CheckSession();
 $sId =  Session::get('roleid');
 if ($sId === '1') { ?>
 
@@ -75,7 +74,7 @@ if (isset($userAdd)) {
 <?php
 }else{
 
-  header('Location:index.php');
+  header('Location:/index.php');
 
 
 

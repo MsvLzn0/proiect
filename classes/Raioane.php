@@ -4,7 +4,7 @@ include_once 'lib/Database.php';
 include_once 'lib/Session.php';
 
 
-class Imobile{
+class Raioane{
 
 
     // Db Property
@@ -24,10 +24,10 @@ class Imobile{
     }
 
 // Check Exist Raion Method
-    public function checkExistImobil($nr_cadastral){
-        $sql = "SELECT nr_cadastral from  imobil WHERE nr_cadastral = :nr_cadastral";
+    public function checkExistRaion($nume){
+        $sql = "SELECT nume from  raion WHERE nume = :nume";
         $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':nr_cadastral', $nr_cadastral);
+        $stmt->bindValue(':nume', $nume);
         $stmt->execute();
         if ($stmt->rowCount()> 0) {
             return true;
@@ -36,45 +36,36 @@ class Imobile{
         }
     }
 
-    // Add New Imobil By Admin
-    public function addNewImobilByAdmin($data)
+    // Add New Regiune By Admin
+    public function addNewRaionByAdmin($data)
     {
-        $id_proprietar = $data['id_proprietar'];
-        $id_strada = $data['id_strada'];
-        $nr_cadastral = $data['nr_cadastral'];
-        $tel = $data['tel'];
-        $nr = $data['nr'];
-        $id_suburbie = $data['id_suburbie'];
+        $id_regiune = $data['id_regiune'];
+        $nume = $data['nume'];
+
+        $checkRaion = $this->checkExistRaion($nume);
 
 
-        $checkImobil = $this->checkExistImobil($nr_cadastral);
-
-
-        if ($nr_cadastral == "" || $tel == "" || $nr == "") {
+        if ($nume == "") {
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Câmpurile de introducere nu trebuie să fie Golite!</div>';
             return $msg;
-        } elseif (strlen($tel ) < 8) {
+        } elseif (strlen($nume) < 2) {
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong>Telefonul este prea scurt, cel puțin 8 caractere!</div>';
+<strong>Error !</strong> Numele raionului este prea scurt, cel puțin 2 caractere!</div>';
             return $msg;
-        } elseif ($checkImobil == TRUE) {
+        } elseif ($checkRaion == TRUE) {
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Imobilul există deja, vă rugăm să încercați un alt imobil ...!</div>';
+<strong>Error !</strong> Raionul există deja, vă rugăm să încercați un alt raion ...!</div>';
             return $msg;
         } else {
 
-            $sql = "INSERT INTO imobil(id_proprietar, id_strada, nr_cadastral, tel, nr, id_suburbie) VALUES(:id_proprietar, :id_strada, :nr_cadastral, :tel, :nr, :id_suburbie )";
+            $sql = "INSERT INTO raion(id_regiune, nume ) VALUES(:id_regiune, :nume)";
             $stmt = $this->db->pdo->prepare($sql);
-            $stmt->bindValue(':id_proprietar', $id_proprietar);
-            $stmt->bindValue(':id_strada', $id_strada);
-            $stmt->bindValue(':nr_cadastral', $nr_cadastral);
-            $stmt->bindValue(':tel', $tel);
-            $stmt->bindValue(':nr', $nr);
-            $stmt->bindValue(':id_suburbie', $id_suburbie);
+            $stmt->bindValue(':id_regiune', $id_regiune);
+            $stmt->bindValue(':nume', $nume);
             $result = $stmt->execute();
             if ($result) {
                 $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
@@ -89,43 +80,43 @@ class Imobile{
             }
         }
     }
-// Select All Imobile Method
-    public function selectAllImobileData(){
-        $sql = "SELECT * FROM imobil ORDER BY id DESC";
-        $stmt = $this->db->pdo->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-    public function selectAllActiveImobile(){
-        $sql = "SELECT * FROM imobil WHERE isActive='1'ORDER BY id DESC";
+// Select All Raioane Method
+    public function selectAllRaioaneData(){
+        $sql = "SELECT * FROM raion ORDER BY id DESC";
         $stmt = $this->db->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-
+    // Select All Raioane Method
+    public function selectAllActiveRaioane(){
+        $sql = "SELECT * FROM raion WHERE isActive='1' ORDER BY id DESC";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
 // Delete Raion by Id Method
-    public function deleteImobileById($remove){
-        $sql = "DELETE FROM imobil WHERE id = :id ";
+    public function deleteRaioaneById($remove){
+        $sql = "DELETE FROM raion WHERE id = :id ";
         $stmt = $this->db->pdo->prepare($sql);
         $stmt->bindValue(':id', $remove);
         $result =$stmt->execute();
         if ($result) {
             $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success !</strong> Imobil șters cu succes!</div>';
+    <strong>Success !</strong> Regiune șters cu succes!</div>';
             return $msg;
         }else{
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Imobil nu a fost șters!</div>';
+    <strong>Error !</strong> Regiunea nu a fost șters!</div>';
             return $msg;
         }
     }
     // User activated By Admin
-    public function imobileActiveByAdmin($active){
-        $sql = "UPDATE imobil SET
+    public function raioaneActiveByAdmin($active){
+        $sql = "UPDATE raion SET
        isActive=:isActive
        WHERE id = :id";
 
@@ -134,21 +125,21 @@ class Imobile{
         $stmt->bindValue(':id', $active);
         $result =   $stmt->execute();
         if ($result) {
-            echo "<script>location.href='imobil.php';</script>";
+            echo "<script>location.href='raion.php';</script>";
             Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> Imobilul activat cu succes!</div>');
+          <strong>Success !</strong> Raionul activat cu succes!</div>');
         }else{
-            echo "<script>location.href='imobil.php';</script>";
+            echo "<script>location.href='raion.php';</script>";
             Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Imobilull nu este activat!</div>');
+    <strong>Error !</strong> Raionul nu este activat!</div>');
         }
     }
 // Service Deactivated By Admin
-    public function imobileDeactiveByAdmin($deactive)
+    public function raioaneDeactiveByAdmin($deactive)
     {
-        $sql = "UPDATE imobil SET
+        $sql = "UPDATE raion SET
 
        isActive=:isActive
        WHERE id = :id";
@@ -158,70 +149,59 @@ class Imobile{
         $stmt->bindValue(':id', $deactive);
         $result = $stmt->execute();
         if ($result) {
-            echo "<script>location.href='imobil.php';</script>";
+            echo "<script>location.href='raion.php';</script>";
             Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <strong>Success !</strong> Raionul a fost dezactivat cu succes!</div>');
 
         } else {
-            echo "<script>location.href='imobil.php';</script>";
+            echo "<script>location.href='raion.php';</script>";
             Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Imobilul nu este dezactivate!</div>');
+    <strong>Error !</strong> Raionul nu este dezactivate!</div>');
         }
     }
 
 //   Get Single Service Information By Id Method
-    public function updateImobilByIdInfo($imobilid, $data)
+    public function updateRaionByIdInfo($raionid, $data)
     {
-        $id_proprietar = $data['id_proprietar'];
-        $id_strada = $data['id_strada'];
-        $nr_cadastral = $data['nr_cadastral'];
-        $tel = $data['tel'];
-        $nr = $data['nr'];
-        $id_suburbie = $data['id_suburbie'];
+        $id_regiune = $data['id_regiune'];
+        $nume = $data['nume'];
 
 
 
-        if ($nr_cadastral == "" || $tel == "" || $nr == "") {
+
+        if ($nume == "") {
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Câmpurile de introducere nu trebuie să fie Golite!</div>';
             return $msg;
-        } elseif (strlen($tel) < 8) {
+        } elseif (strlen($nume) < 3) {
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Numarul este prea scurt, cel puțin 8 caractere!</div>';
+<strong>Error !</strong> Numele raionului este prea scurt, cel puțin 3 caractere!</div>';
             return $msg;
         } else {
 
-            $sql = "UPDATE imobil SET
-          id_proprietar = :id_proprietar,
-          id_strada = :id_strada,
-          nr_cadastral = :nr_cadastral,
-          tel = :tel,
-          nr = :nr,
-          id_suburbie = :id_suburbie
+            $sql = "UPDATE raion SET
+          id_regiune = :id_regiune,
+          nume = :nume
           WHERE id = :id";
             $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':id_proprietar', $id_proprietar);
-        $stmt->bindValue(':id_strada', $id_strada);
-        $stmt->bindValue(':nr_cadastral', $nr_cadastral);
-        $stmt->bindValue(':tel', $tel);
-        $stmt->bindValue(':nr', $nr);
-        $stmt->bindValue(':id_suburbie', $id_suburbie);
-        $stmt->bindValue(':id', $imobilid);
+            $stmt->bindValue(':id_regiune', $id_regiune);
+            $stmt->bindValue(':nume', $nume);
+            $stmt->bindValue(':id', $raionid);
             $result = $stmt->execute();
 
             if ($result) {
-                echo "<script>location.href='imobil.php';</script>";
+                echo "<script>location.href='raion.php';</script>";
                 Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <strong>Success !</strong> Uau, informațiile dvs. au fost actualizate cu succes!</div>');
 
 
             } else {
-                echo "<script>location.href='imobil.php';</script>";
+                echo "<script>location.href='raion.php';</script>";
                 Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Error !</strong> Datele nu sunt inserate!</div>');
@@ -231,10 +211,10 @@ class Imobile{
         }
     }
     // Get Single Client Information By Id Method
-    public function getImobileInfoById($imobilid){
+    public function getRaioaneInfoById($raionid){
         $sql = "SELECT * FROM raion WHERE id = :id LIMIT 1";
         $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':id', $imobilid);
+        $stmt->bindValue(':id', $raionid);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         if ($result) {

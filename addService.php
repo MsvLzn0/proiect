@@ -1,6 +1,5 @@
 <?php
 include 'inc/header.php';
-Session::CheckSession();
 $sId =  Session::get('roleid');
 if ($sId === '1') { ?>
 

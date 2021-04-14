@@ -1,8 +1,6 @@
 <?php
 include 'inc/header.php';
 
-Session::CheckSession();
-
 $logMsg = Session::get('logMsg');
 if (isset($logMsg)) {
   echo $logMsg;

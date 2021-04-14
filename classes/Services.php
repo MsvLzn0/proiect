@@ -99,7 +99,12 @@ class Services{
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-
+    public function selectAllActiveServicePr(){
+        $sql = "SELECT * FROM servicii_prestate  WHERE isActive='1' ORDER BY id DESC";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
 // Delete Srevice by Id Method
     public function deleteServiceById($remove){
@@ -126,7 +131,7 @@ class Services{
        WHERE id = :id";
 
         $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':isActive', 0);
+        $stmt->bindValue(':isActive', 1);
         $stmt->bindValue(':id', $active);
         $result =   $stmt->execute();
         if ($result) {
@@ -150,7 +155,7 @@ class Services{
        WHERE id = :id";
 
         $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':isActive', 1);
+        $stmt->bindValue(':isActive', 0);
         $stmt->bindValue(':id', $deactive);
         $result = $stmt->execute();
         if ($result) {

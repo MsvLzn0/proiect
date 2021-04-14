@@ -4,7 +4,7 @@ include_once 'lib/Database.php';
 include_once 'lib/Session.php';
 
 
-class Imobile{
+class Contracte{
 
 
     // Db Property
@@ -23,58 +23,32 @@ class Imobile{
         return date('Y-m-d H:i:s', $strtime);
     }
 
-// Check Exist Raion Method
-    public function checkExistImobil($nr_cadastral){
-        $sql = "SELECT nr_cadastral from  imobil WHERE nr_cadastral = :nr_cadastral";
-        $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':nr_cadastral', $nr_cadastral);
-        $stmt->execute();
-        if ($stmt->rowCount()> 0) {
-            return true;
-        }else{
-            return false;
-        }
-    }
+// Check Exist Contract Method
 
-    // Add New Imobil By Admin
-    public function addNewImobilByAdmin($data)
+    public function addNewContractByAdmin($data)
     {
-        $id_proprietar = $data['id_proprietar'];
-        $id_strada = $data['id_strada'];
-        $nr_cadastral = $data['nr_cadastral'];
-        $tel = $data['tel'];
-        $nr = $data['nr'];
-        $id_suburbie = $data['id_suburbie'];
+        $nr_contract = $data['nr_contract'];
+        $id_imobil = $data['id_imobil'];
+
+        $checkContract = $this->checkExistContract($nr_contract);
 
 
-        $checkImobil = $this->checkExistImobil($nr_cadastral);
-
-
-        if ($nr_cadastral == "" || $tel == "" || $nr == "") {
+        if ($nr_contract == "") {
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Câmpurile de introducere nu trebuie să fie Golite!</div>';
             return $msg;
-        } elseif (strlen($tel ) < 8) {
+        } elseif ($checkContract == TRUE) {
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong>Telefonul este prea scurt, cel puțin 8 caractere!</div>';
-            return $msg;
-        } elseif ($checkImobil == TRUE) {
-            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Imobilul există deja, vă rugăm să încercați un alt imobil ...!</div>';
+<strong>Error !</strong> Contractul există deja, vă rugăm să încercați un alt raion ...!</div>';
             return $msg;
         } else {
 
-            $sql = "INSERT INTO imobil(id_proprietar, id_strada, nr_cadastral, tel, nr, id_suburbie) VALUES(:id_proprietar, :id_strada, :nr_cadastral, :tel, :nr, :id_suburbie )";
+            $sql = "INSERT INTO contract(nr_contract, id_imobil ) VALUES(:nr_contract, :id_imobil)";
             $stmt = $this->db->pdo->prepare($sql);
-            $stmt->bindValue(':id_proprietar', $id_proprietar);
-            $stmt->bindValue(':id_strada', $id_strada);
-            $stmt->bindValue(':nr_cadastral', $nr_cadastral);
-            $stmt->bindValue(':tel', $tel);
-            $stmt->bindValue(':nr', $nr);
-            $stmt->bindValue(':id_suburbie', $id_suburbie);
+            $stmt->bindValue(':nr_contract', $nr_contract);
+            $stmt->bindValue(':id_imobil', $id_imobil);
             $result = $stmt->execute();
             if ($result) {
                 $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
@@ -89,43 +63,58 @@ class Imobile{
             }
         }
     }
-// Select All Imobile Method
-    public function selectAllImobileData(){
-        $sql = "SELECT * FROM imobil ORDER BY id DESC";
+
+
+    // Add New Regiune By Admin
+
+    public function checkExistContract($nr_contract){
+        $sql = "SELECT nr_contract from  contract WHERE nr_contract = :nr_contract";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->bindValue(':nr_contract', $nr_contract);
+        $stmt->execute();
+        if ($stmt->rowCount()> 0) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+// Select All Contracte Method
+
+    public function selectAllContracteData(){
+        $sql = "SELECT * FROM contract ORDER BY id DESC";
         $stmt = $this->db->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-    public function selectAllActiveImobile(){
-        $sql = "SELECT * FROM imobil WHERE isActive='1'ORDER BY id DESC";
+    public function selectAllActiveContracte(){
+        $sql = "SELECT * FROM contract  WHERE isActive='1' ORDER BY id DESC";
         $stmt = $this->db->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
+}
 
 
-
-// Delete Raion by Id Method
-    public function deleteImobileById($remove){
-        $sql = "DELETE FROM imobil WHERE id = :id ";
+// Delete Contract by Id Method
+    public function deleteContracteById($remove){
+        $sql = "DELETE FROM contract WHERE id = :id ";
         $stmt = $this->db->pdo->prepare($sql);
         $stmt->bindValue(':id', $remove);
         $result =$stmt->execute();
         if ($result) {
             $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success !</strong> Imobil șters cu succes!</div>';
+    <strong>Success !</strong> Contract șters cu succes!</div>';
             return $msg;
         }else{
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Imobil nu a fost șters!</div>';
+    <strong>Error !</strong> Contract nu a fost șters!</div>';
             return $msg;
         }
     }
-    // User activated By Admin
-    public function imobileActiveByAdmin($active){
-        $sql = "UPDATE imobil SET
+    // Contract activated By Admin
+    public function contractActiveByAdmin($active){
+        $sql = "UPDATE contract SET
        isActive=:isActive
        WHERE id = :id";
 
@@ -134,21 +123,21 @@ class Imobile{
         $stmt->bindValue(':id', $active);
         $result =   $stmt->execute();
         if ($result) {
-            echo "<script>location.href='imobil.php';</script>";
+            echo "<script>location.href='contract.php';</script>";
             Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> Imobilul activat cu succes!</div>');
+          <strong>Success !</strong> Contract activat cu succes!</div>');
         }else{
-            echo "<script>location.href='imobil.php';</script>";
+            echo "<script>location.href='contract.php';</script>";
             Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Imobilull nu este activat!</div>');
+    <strong>Error !</strong> Contract nu este activat!</div>');
         }
     }
-// Service Deactivated By Admin
-    public function imobileDeactiveByAdmin($deactive)
+// Contract Deactivated By Admin
+    public function contractDeactiveByAdmin($deactive)
     {
-        $sql = "UPDATE imobil SET
+        $sql = "UPDATE contract SET
 
        isActive=:isActive
        WHERE id = :id";
@@ -158,70 +147,54 @@ class Imobile{
         $stmt->bindValue(':id', $deactive);
         $result = $stmt->execute();
         if ($result) {
-            echo "<script>location.href='imobil.php';</script>";
+            echo "<script>location.href='contract.php';</script>";
             Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> Raionul a fost dezactivat cu succes!</div>');
+          <strong>Success !</strong> Contractul a fost dezactivat cu succes!</div>');
 
         } else {
-            echo "<script>location.href='imobil.php';</script>";
+            echo "<script>location.href='Contract.php';</script>";
             Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Imobilul nu este dezactivate!</div>');
+    <strong>Error !</strong> Contractul nu este dezactivate!</div>');
         }
     }
 
 //   Get Single Service Information By Id Method
-    public function updateImobilByIdInfo($imobilid, $data)
+    public function updateContractByIdInfo($contractid, $data)
     {
-        $id_proprietar = $data['id_proprietar'];
-        $id_strada = $data['id_strada'];
-        $nr_cadastral = $data['nr_cadastral'];
-        $tel = $data['tel'];
-        $nr = $data['nr'];
-        $id_suburbie = $data['id_suburbie'];
+        $nr_contract = $data['nr_contract'];
+        $id_imobil = $data['id_imobil'];
 
 
 
-        if ($nr_cadastral == "" || $tel == "" || $nr == "") {
+
+        if ($nr_contract == "") {
             $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Câmpurile de introducere nu trebuie să fie Golite!</div>';
             return $msg;
-        } elseif (strlen($tel) < 8) {
-            $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Numarul este prea scurt, cel puțin 8 caractere!</div>';
-            return $msg;
         } else {
 
-            $sql = "UPDATE imobil SET
-          id_proprietar = :id_proprietar,
-          id_strada = :id_strada,
-          nr_cadastral = :nr_cadastral,
-          tel = :tel,
-          nr = :nr,
-          id_suburbie = :id_suburbie
+            $sql = "UPDATE contract SET
+          nr_contract = :nr_contract;
+          id_imobil = :id_imobil
           WHERE id = :id";
             $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':id_proprietar', $id_proprietar);
-        $stmt->bindValue(':id_strada', $id_strada);
-        $stmt->bindValue(':nr_cadastral', $nr_cadastral);
-        $stmt->bindValue(':tel', $tel);
-        $stmt->bindValue(':nr', $nr);
-        $stmt->bindValue(':id_suburbie', $id_suburbie);
-        $stmt->bindValue(':id', $imobilid);
+            $stmt->bindValue(':nr_contract', $nr_contract);
+            $stmt->bindValue(':id_imobil', $id_imobil);
+            $stmt->bindValue(':id', $contractid);
             $result = $stmt->execute();
 
             if ($result) {
-                echo "<script>location.href='imobil.php';</script>";
+                echo "<script>location.href='contract.php';</script>";
                 Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <strong>Success !</strong> Uau, informațiile dvs. au fost actualizate cu succes!</div>');
 
 
             } else {
-                echo "<script>location.href='imobil.php';</script>";
+                echo "<script>location.href='contract.php';</script>";
                 Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Error !</strong> Datele nu sunt inserate!</div>');
@@ -231,10 +204,10 @@ class Imobile{
         }
     }
     // Get Single Client Information By Id Method
-    public function getImobileInfoById($imobilid){
-        $sql = "SELECT * FROM raion WHERE id = :id LIMIT 1";
+    public function getContracteInfoById($contractid){
+        $sql = "SELECT * FROM contract WHERE id = :id LIMIT 1";
         $stmt = $this->db->pdo->prepare($sql);
-        $stmt->bindValue(':id', $imobilid);
+        $stmt->bindValue(':id', $contractid);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         if ($result) {

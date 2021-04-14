@@ -80,11 +80,6 @@ class Users{
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Parola dvs. trebuie să conțină cel puțin 1 număr!</div>';
         return $msg;
-    }elseif (filter_var($email, FILTER_VALIDATE_EMAIL === FALSE)) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Adresa email invalida !</div>';
-        return $msg;
     }elseif ($checkEmail == TRUE) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -255,11 +250,6 @@ class Users{
   <strong>Error !</strong> E-mailul sau parola nu vor fi goale!</div>';
           return $msg;
 
-      }elseif (filter_var($email, FILTER_VALIDATE_EMAIL === FALSE)) {
-        $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error !</strong> Adresa email invalida !</div>';
-          return $msg;
       }elseif ($checkEmail == FALSE) {
         $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
